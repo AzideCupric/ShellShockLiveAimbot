@@ -3,7 +3,7 @@ from pynput.mouse import Listener as MouseListener
 from pynput import keyboard
 #from pynput.keyboard import Key, Controller
 #from pynput.mouse import Button, Controller
-import pynput.keyboard as kb
+import pynput.keyboard as kb #why not from pymput import keyboard as kb?
 import pynput.mouse as ms
 import time
 import platform
@@ -17,6 +17,7 @@ set_wind = ""
 
 def calcVelocity(distancex,distancey,angle):
     # from https://steamcommunity.com/sharedfiles/filedetails/?id=1327582953
+    # 常数都拿出来
     g = -379.106
     q = 0.0518718
     v0 = -2/(g * q) * math.sqrt((-g * distancex * distancex)/(2 * math.cos(math.radians(angle)) * math.cos(math.radians(angle)) * (math.tan(math.radians(angle)) * distancex - distancey)))
