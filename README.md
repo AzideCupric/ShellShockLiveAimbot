@@ -1,19 +1,18 @@
 # ShellShockLiveAimbot
 
-A simple Python script using [ilyaki's formula](https://steamcommunity.com/sharedfiles/filedetails/?id=1327582953) for finding the optimal power and angle for [ShellShock Live](https://store.steampowered.com/app/326460/ShellShock_Live/).
+A simple Python script using [ilyaki's formula](https://steamcommunity.com/sharedfiles/filedetails/?id=1327582953) for finding the optimal power and angle for [ShellShock Live](https://store.steampowered.com/app/326460/ShellShock_Live/).  
+通过应用 [ilyaki 的公式](https://steamcommunity.com/sharedfiles/filedetails/?id=1327582953) 来计算 [ShellShock Live](https://store.steampowered.com/app/326460/ShellShock_Live/) 中发射炮弹的最佳角度与力度。
 
-I've added 2 modi
-- power and angle with lowest possible power
-- power and angle with highest angle and power below 100
+## 依赖安装
 
-### Use
-- Start the game via Steam and start the aimbot with `python3 shellshock.py`
-- Focus the game window by clicking in it (select a game mode etc.)
-- When you're in the game, press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>P</kbd> and click in the middle of your tank. You should see the ccordinates in the console window. If you have misclicked you can press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>P</kbd> again and select your tank. This will override the old coordinates.
-- Same procedure for the enemy tank, press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>E</kbd> and click on it. Pressing <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>E</kbd> again will override the old coordinates. You should see the ccordinates in the console window.
-- If you have selected your and your enemy's tank, the script will calculate the required angle and power for the above described modi.
-- You can set power and angle by hand or let the computer do the work for you: For the first modus press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>S</kbd> and for the sedond modus press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>H</kbd>
-- Press <kbd>SPACE</kbd> to fire the projectile
+推荐使用[Poetry](https://python-poetry.org/)安装包管理器  
+使用命令：`poetry install --no-dev`
 
-### Todo:
-- [ ] wind calculation
+## 使用
+有两个模式可供选择：
+- 平抛发射（炮管水平角度较小）
+- 高抛发射（炮管水平角度较大）
+
+### 运行脚本
+`python shellaim.py`
+
