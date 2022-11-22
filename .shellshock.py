@@ -34,6 +34,7 @@ def calcVelocityWithWind(s_x,s_y,angle,wind):
     power = (2/(g * q)) * v_0
     return power
 
+#unuse
 def calcVelocityWithWind_y0(s_x,angle,wind):
     g = 379.106
     q = 0.0518718
