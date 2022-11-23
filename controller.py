@@ -1,6 +1,7 @@
 from typing import Literal
 from pynput import keyboard, mouse
 import time
+import platform
 
 from .logger import logger
 from .calculator import gameEnv
@@ -53,15 +54,53 @@ class Bot:
                 time.sleep(0.05)
         logger.info("%s发射力度设置完成", mode_name)
 
-        if diff_power > 0:
-            for _ in range(0, diff_power):
-                self.keys.tap(keyboard.Key.up)
+        if diff_angle > 0:
+            for _ in range(0, diff_angle):
+                self.keys.tap(keyboard.Key.right)
                 time.sleep(0.05)
-            logger.info("%s炮管上抬完成", mode_name)
         else:
-            for _ in range(0, diff_power):
-                self.keys.tap(keyboard.Key.down)
+            for _ in range(0, diff_angle):
+                self.keys.tap(keyboard.Key.left)
                 time.sleep(0.05)
-            logger.info("%s炮管下抬完成", mode_name)
+        logger.info("%s发射角度调整完成", mode_name)
 
+    def get_player_pos(self, x:int, y:int, _, pressed:bool):
+        if pressed:
+            logger.info("设定当前玩家位置为：%d, %d", x, y)
+            self.env.player.x = x
+            self.env.player.y = y
+            return False #return False 表示关闭监听
+        return True
+    
+    def locate_player(self):
+        logger.info("使用鼠标点击玩家坦克位置：")
+        mouse_listener = mouse.Listener(on_click=self.get_player_pos)
+        mouse_listener.start()
+        mouse_listener.join()
+    
+    def get_enemy_pos(self, x:int, y:int, _, pressed:bool):
+        if pressed:
+            logger.info("设定当前敌方位置为：%d, %d", x, y)
+            self.env.enemy.x = x
+            self.env.enemy.y = y
+            return False # 参见get_player_pos()
+        return True
+    
+    def locate_enemy(self):
+        logger.info("使用鼠标点击敌方坦克位置")
+        mouse_listener = mouse.Listener(on_click=self.get_enemy_pos)
+        mouse_listener.start()
+        mouse_listener.join()
+        
+    def get_wind_num(self, key):
+        if platform.system() == "Linux":
+            if key == keyboard.Key.enter:
+                logger.info("设置风力为%s", wind_str)
+                
+                return False
+            if hasattr(key, 'char'):
+                if key.char is None:
+                    wind_str = "5"
+                elif key.char in "1234567890":
+                    wind_str += key.char
         

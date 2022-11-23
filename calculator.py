@@ -21,6 +21,7 @@ class gameEnv:
     q: float = 0.0518718
     z: float = 0.5
     wind: int = 0
+    wind_str:str = ""
     player: Tank
     enemy: Tank
     flatshot: Shot
