@@ -17,8 +17,8 @@ class Bot:
 
     def __init__(self, env, keys, mouse):
         self.env = env
-        self.keys =keys
-        self.mouse =mouse
+        self.keys = keys
+        self.mouse = mouse
 
     def controller_reset(self) -> None:
         """炮管复位到垂直角度:angle=90,power=100"""
@@ -34,10 +34,10 @@ class Bot:
 
     def get_enemy_direction(self) -> tuple[Literal["left", "right"], int]:
         if self.env.player.x < self.env.enemy.x:
-            logger.info("检测到敌方在我方左侧")
+            logger.info("检测到敌方在我方右侧")
             return "right", -1
         else:
-            logger.info("检测到敌方在我方右侧")
+            logger.info("检测到敌方在我方左侧")
             return "left", 1
 
     def set_power_and_angle_by_mode(self, mode: Literal["flat", "high"]) -> None:
@@ -46,29 +46,29 @@ class Bot:
         direct_factor = self.get_enemy_direction()[1]
         match mode:
             case "flat":
-                diff_power = self.env.flatshot.power - self.reset_power
+                diff_power = self.reset_power - self.env.flatshot.power
                 diff_angle = direct_factor * \
-                    (self.env.flatshot.angle - self.reset_angle)
+                    (self.reset_angle - self.env.flatshot.angle)
             case "high":
-                diff_power = self.env.highshot.power - self.reset_power
-                diff_angle = direct_factor * \
-                    (self.env.highshot.power - self.reset_angle)
+                diff_power = self.reset_power - self.env.highshot.power
+                diff_angle = direct_factor * self.env.highshot.angle
+        logger.info("%s力度差异值为%f, 角度差异值为%f", mode_name, diff_power, diff_angle)
 
         def key_adjust(end, press_key, wait_time=0.05):
-            for _ in range(0, end):
+            for _ in range(0, round(end)):
                 self.keys.tap(press_key)
                 time.sleep(wait_time)
 
         if diff_power > 0:
-            key_adjust(diff_power, keyboard.Key.up)
-        else:
             key_adjust(diff_power, keyboard.Key.down)
+        else:
+            key_adjust(-diff_power, keyboard.Key.up)
         logger.info("%s发射力度设置完成", mode_name)
 
-        if diff_angle > 0:
-            key_adjust(diff_angle, keyboard.Key.right)
+        if diff_angle < 0:
+            key_adjust(-diff_angle, keyboard.Key.right)
         else:
-            key_adjust(diff_power, keyboard.Key.left)
+            key_adjust(diff_angle, keyboard.Key.left)
         logger.info("%s发射角度调整完成", mode_name)
 
     def get_player_pos(self, x: int, y: int, _, pressed: bool):

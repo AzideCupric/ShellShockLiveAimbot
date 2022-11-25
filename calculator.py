@@ -2,6 +2,7 @@ import math
 from logger import logger
 from dataclasses import dataclass
 
+
 @dataclass
 class Tank:
     name: str
@@ -11,7 +12,7 @@ class Tank:
     def __init__(self, name) -> None:
         self.name = name
         self.x = 0
-        self.y =0
+        self.y = 0
 
 
 @dataclass
@@ -79,7 +80,7 @@ class gameEnv:
                     flat_angle = possible_angle
 
         logger.info("平射角度：%d - 平射力度：%2f", flat_angle, flat_power)
-        flatshot = Shot(flat_angle, flat_power)
+        flatshot = Shot(flat_power, flat_angle)
         self.flatshot = flatshot
         return flatshot
 
@@ -102,6 +103,6 @@ class gameEnv:
                     break
 
         logger.info("高射角度：%d - 高射力度：%2f", high_angle, high_power)
-        highshot = Shot(high_angle, high_power)
+        highshot = Shot(high_power, high_angle)
         self.highshot = highshot
         return highshot

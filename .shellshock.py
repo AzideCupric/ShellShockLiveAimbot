@@ -3,7 +3,7 @@ from pynput.mouse import Listener as MouseListener
 from pynput import keyboard
 #from pynput.keyboard import Key, Controller
 #from pynput.mouse import Button, Controller
-import pynput.keyboard as kb #why not from pymput import keyboard as kb?
+import pynput.keyboard as kb  # why not from pymput import keyboard as kb?
 import pynput.mouse as ms
 import time
 import platform
@@ -15,48 +15,56 @@ os = platform.system()
 global set_wind
 set_wind = ""
 
-def calcVelocity(distancex,distancey,angle):
+
+def calcVelocity(distancex, distancey, angle):
     # from https://steamcommunity.com/sharedfiles/filedetails/?id=1327582953
     # 常数都拿出来
     g = -379.106
     q = 0.0518718
-    v0 = -2/(g * q) * math.sqrt((-g * distancex * distancex)/(2 * math.cos(math.radians(angle)) * math.cos(math.radians(angle)) * (math.tan(math.radians(angle)) * distancex - distancey)))
+    v0 = -2/(g * q) * math.sqrt((-g * distancex * distancex)/(2 * math.cos(math.radians(angle))
+                                                              * math.cos(math.radians(angle)) * (math.tan(math.radians(angle)) * distancex - distancey)))
     return v0
 
-def calcVelocityWithWind(s_x,s_y,angle,wind):
+
+def calcVelocityWithWind(s_x, s_y, angle, wind):
     g = 379.106
     q = 0.0518718
     #z = 0.4757
     #z = 0.513538766675914
     z = 0.5
     w = z * wind
-    v_0 = (g * s_x - w * s_y)/(math.sqrt(2 * g * s_x * math.sin(math.radians(angle)) * math.cos(math.radians(angle)) + 2 * g * s_y * pow(math.cos(math.radians(angle)),2) + 2 * w * s_x * pow(math.sin(math.radians(angle)),2) + 2 * w * s_y * math.sin(math.radians(angle)) * math.cos(math.radians(angle))))
+    v_0 = (g * s_x - w * s_y)/(math.sqrt(2 * g * s_x * math.sin(math.radians(angle)) * math.cos(math.radians(angle)) + 2 * g * s_y * pow(math.cos(math.radians(angle)),
+                                                                                                                                         2) + 2 * w * s_x * pow(math.sin(math.radians(angle)), 2) + 2 * w * s_y * math.sin(math.radians(angle)) * math.cos(math.radians(angle))))
     power = (2/(g * q)) * v_0
     return power
 
-#unuse
-def calcVelocityWithWind_y0(s_x,angle,wind):
+# unuse
+
+
+def calcVelocityWithWind_y0(s_x, angle, wind):
     g = 379.106
     q = 0.0518718
     z = 0.4757
     w = z * wind
     print("Inputs: " + str(s_x) + ", " + str(angle) + ", " + str(wind))
-    v_0 = (g * math.sqrt(s_x))/(math.sqrt(2 * g * math.sin(math.radians(angle)) * math.cos(math.radians(angle)) + 2 * w * pow(math.sin(math.radians(angle)),2)))
+    v_0 = (g * math.sqrt(s_x))/(math.sqrt(2 * g * math.sin(math.radians(angle)) *
+                                          math.cos(math.radians(angle)) + 2 * w * pow(math.sin(math.radians(angle)), 2)))
     power = (2/(g * q)) * v_0
     print(power)
     return power
 
-def calcOptimal(diffx,diffy,wind):
+
+def calcOptimal(diffx, diffy, wind):
     smallestVelocity = 100
     bestAngle = 0
     global velocity
     global angle
-    for possibleAngle in range(1,90):
+    for possibleAngle in range(1, 90):
         try:
             if wind == 0:
-                v0 = calcVelocity(diffx,diffy,possibleAngle)
+                v0 = calcVelocity(diffx, diffy, possibleAngle)
             else:
-                v0 = calcVelocityWithWind(diffx,diffy,possibleAngle,wind)
+                v0 = calcVelocityWithWind(diffx, diffy, possibleAngle, wind)
             if v0 < smallestVelocity:
                 smallestVelocity = v0
                 bestAngle = possibleAngle
@@ -69,15 +77,16 @@ def calcOptimal(diffx,diffy,wind):
     velocity = smallestVelocity
     angle = bestAngle
 
-def calcHighestBelow100(diffx,diffy,wind):
+
+def calcHighestBelow100(diffx, diffy, wind):
     global highVelocity
     global highAngle
-    for possibleAngle in range(1,90):
+    for possibleAngle in range(1, 90):
         if wind == 0:
-            v0 = calcVelocity(diffx,diffy,90-possibleAngle)
+            v0 = calcVelocity(diffx, diffy, 90-possibleAngle)
         else:
             try:
-                v0 = calcVelocityWithWind(diffx,diffy,90-possibleAngle,wind)
+                v0 = calcVelocityWithWind(diffx, diffy, 90-possibleAngle, wind)
             except Exception as e:
                 v0 = 101
         if v0 < 100:
@@ -88,6 +97,7 @@ def calcHighestBelow100(diffx,diffy,wind):
     print("Angle = " + str(90-possibleAngle))
     highVelocity = v0
     highAngle = 90-possibleAngle
+
 
 def cleanGlobals():
     try:
@@ -111,41 +121,44 @@ def cleanGlobals():
     except Exception as e:
         pass
 
-def setPowerAndAngle(targetPower,targetAngle,startPower,startAngle,direction):
+
+def setPowerAndAngle(targetPower, targetAngle, startPower, startAngle, direction):
     diffPower = targetPower - startPower
     if direction == "left":
         diffAngle = targetAngle - startAngle
     else:
         diffAngle = -targetAngle + startAngle
     if diffPower > 0:
-        for i in range(0,diffPower):
+        for i in range(0, diffPower):
             # press arrow up
             keys.tap(kb.Key.up)
             time.sleep(0.05)
     else:
-        for i in range(0,-diffPower):
+        for i in range(0, -diffPower):
             # press arrow down
             keys.tap(kb.Key.down)
             time.sleep(0.05)
     if diffAngle > 0:
-        for i in range(0,diffAngle):
+        for i in range(0, diffAngle):
             # press arrow right
             keys.tap(kb.Key.right)
             time.sleep(0.05)
     else:
-        for i in range(0,-diffAngle):
+        for i in range(0, -diffAngle):
             # press arrow left
             keys.tap(kb.Key.left)
             time.sleep(0.05)
 
-def setTo100_90(tankx,tanky):
-    mouse.position = (tankx,tanky)
+
+def setTo100_90(tankx, tanky):
+    mouse.position = (tankx, tanky)
     time.sleep(0.05)
     mouse.press(ms.Button.left)
     time.sleep(0.05)
-    mouse.move(0,-tanky)
+    mouse.move(0, -tanky)
     time.sleep(0.05)
     mouse.release(ms.Button.left)
+
 
 def posPlayer(x, y, button, pressed):
     if pressed:
@@ -156,6 +169,7 @@ def posPlayer(x, y, button, pressed):
         YourY = y
     return False
 
+
 def posEnemy(x, y, button, pressed):
     if pressed:
         print("Enemy position: " + str(x) + ", " + str(y))
@@ -165,13 +179,14 @@ def posEnemy(x, y, button, pressed):
         EnemyY = y
     return False
 
+
 def PlayerLocation():
     global set_wind
     if set_wind == "":
         wind = 0
     else:
         wind = int(set_wind)
-    #cleanGlobals()
+    # cleanGlobals()
     print('Click your Tank')
     mouse_listener = MouseListener(on_click=posPlayer)
     mouse_listener.start()
@@ -180,9 +195,10 @@ def PlayerLocation():
         # all needed, calc shot
         diffx = abs(YourX-EnemyX)
         diffy = -EnemyY+YourY
-        calcOptimal(diffx,diffy,wind)
-        calcHighestBelow100(diffx,diffy,wind)
+        calcOptimal(diffx, diffy, wind)
+        calcHighestBelow100(diffx, diffy, wind)
         set_wind = ""
+
 
 def EnemyLocation():
     global set_wind
@@ -190,7 +206,7 @@ def EnemyLocation():
         wind = 0
     else:
         wind = int(set_wind)
-    #cleanGlobals()
+    # cleanGlobals()
     print('Click enemy Tank')
     mouse_listener = MouseListener(on_click=posEnemy)
     mouse_listener.start()
@@ -199,43 +215,47 @@ def EnemyLocation():
         # all needed, calc shot
         diffx = abs(YourX-EnemyX)
         diffy = -EnemyY+YourY
-        calcOptimal(diffx,diffy,wind)
-        calcHighestBelow100(diffx,diffy,wind)
+        calcOptimal(diffx, diffy, wind)
+        calcHighestBelow100(diffx, diffy, wind)
         set_wind = ""
+
 
 def readWind():
     global set_wind
     print("Enter wind strength followed by <ENTER> on your numpad")
-    set_wind=""
+    set_wind = ""
     with keyboard.Listener(on_press=readNumber) as lst:
         lst.join()
     set_wind = int(set_wind)
-    print("Keystroke: "+ str(set_wind))
+    print("Keystroke: " + str(set_wind))
     time.sleep(0.1)
     keys.tap(kb.Key.enter)
 
+
 def prepareShot():
-    setTo100_90(YourX,YourY)
+    setTo100_90(YourX, YourY)
     if YourX < EnemyX:
         direction = "right"
     else:
         direction = "left"
-    setPowerAndAngle(round(velocity),angle,100,90,direction)
+    setPowerAndAngle(round(velocity), angle, 100, 90, direction)
     cleanGlobals()
 
+
 def prepareHighShot():
-    setTo100_90(YourX,YourY)
+    setTo100_90(YourX, YourY)
     if YourX < EnemyX:
         direction = "right"
     else:
         direction = "left"
-    setPowerAndAngle(round(highVelocity),highAngle,100,90,direction)
+    setPowerAndAngle(round(highVelocity), highAngle, 100, 90, direction)
     cleanGlobals()
+
 
 def readNumber(key):
     global set_wind
-    #print(key.vk)
-    #print(key.char)
+    # print(key.vk)
+    # print(key.char)
     if os == "Linux":
         if key == kb.Key.enter:
             print("ENTER pressed")
@@ -261,8 +281,6 @@ def readNumber(key):
         if hasattr(key, 'char') and key.char == '-' and set_wind == "":
             set_wind = set_wind + "-"
             print("")
-
-
 
 
 with keyboard.GlobalHotKeys({'<ctrl>+<alt>+P': PlayerLocation, '<ctrl>+<alt>+E': EnemyLocation, '<ctrl>+<alt>+S': prepareShot, '<ctrl>+<alt>+H': prepareHighShot, '<ctrl>+<alt>+W': readWind}) as h:
