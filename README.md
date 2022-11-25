@@ -19,11 +19,10 @@ A simple Python script using [ilyaki's formula](https://steamcommunity.com/share
 
 - 启动：`python shellaim.py`
 - 选中游戏窗口
-- 标记敌方坦克：<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>E</kbd> 并点击敌方坦克
-- 标记己方坦克：<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>P</kbd> 并点击己方坦克
-- 炮弹轨迹计算：<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>C</kbd>（需要在发射前进行计算）
-- 平射姿态准备：<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd>
-- 高射姿态准备：<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>H</kbd>
-- 设置风力大小：<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>W</kbd>
+- 标记敌方坦克：<kbd>Ctrl</kbd> + <kbd>E</kbd> 并点击敌方坦克
+- 标记己方坦克：<kbd>Ctrl</kbd> + <kbd>P</kbd> 并点击己方坦克
+- 平射姿态准备：<kbd>Ctrl</kbd> + <kbd>F</kbd>
+- 高射姿态准备：<kbd>Ctrl</kbd> + <kbd>H</kbd>
+- 设置风力大小：<kbd>Ctrl</kbd> + <kbd>W</kbd>
 - 发射：<kbd>Space</kbd>
 - 退出：<kbd>Ctrl</kbd> + <kbd>C</kbd>

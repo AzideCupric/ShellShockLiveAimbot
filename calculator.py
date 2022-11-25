@@ -1,7 +1,8 @@
 import math
-from .logger import logger
+from logger import logger
+from dataclasses import dataclass
 
-
+@dataclass
 class Tank:
     name: str
     x: int
@@ -9,8 +10,11 @@ class Tank:
 
     def __init__(self, name) -> None:
         self.name = name
+        self.x = 0
+        self.y =0
 
 
+@dataclass
 class Shot:
     power: int
     angle: int
@@ -25,6 +29,10 @@ class gameEnv:
     enemy: Tank
     flatshot: Shot
     highshot: Shot
+
+    def __init__(self, player, enemy) -> None:
+        self.player = player
+        self.enemy = enemy
 
     def get_distance(self) -> tuple[int, int]:
         diff_x = abs(self.enemy.x - self.player.x)
@@ -70,7 +78,7 @@ class gameEnv:
                     flat_power = power
                     flat_angle = possible_angle
 
-        logger.info("平射角度：%d\n平射力度：%2f", flat_angle, flat_power)
+        logger.info("平射角度：%d - 平射力度：%2f", flat_angle, flat_power)
         flatshot = Shot(flat_angle, flat_power)
         self.flatshot = flatshot
         return flatshot
@@ -93,7 +101,7 @@ class gameEnv:
                     high_power = power
                     break
 
-        logger.info("高射角度：%d\n高射力度：%2f", high_angle, high_power)
+        logger.info("高射角度：%d - 高射力度：%2f", high_angle, high_power)
         highshot = Shot(high_angle, high_power)
         self.highshot = highshot
         return highshot
