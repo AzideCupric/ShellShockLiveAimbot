@@ -102,7 +102,7 @@ class Bot:
     def get_wind_num(self, key):
         if key == keyboard.Key.enter:
             logger.info("读取完成，风力大小：%s", self.wind_str)
-            self.env.wind = ord(self.wind_str)
+            self.env.wind = int(self.wind_str)
             return False
 
         if key == keyboard.Key.backspace:

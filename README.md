@@ -26,3 +26,9 @@ A simple Python script using [ilyaki's formula](https://steamcommunity.com/share
 - 设置风力大小：<kbd>Ctrl</kbd> + <kbd>W</kbd>
 - 发射：<kbd>Space</kbd>
 - 退出：<kbd>Ctrl</kbd> + <kbd>C</kbd>
+
+
+## 鸣谢
+
+绝大部分实现逻辑与基本运算来自原仓库[henrydatei/ShellShockLiveAimbot](https://github.com/henrydatei/ShellShockLiveAimbot), 本Fork仅仅做了重新梳理代码逻辑和优化实现<del>(可能并没有让代码变快，只是代码塞进类里*个人感觉*好看了而已)</del>之类的工作。
+如果有想法还请多多帮助原作者优化shellshock2.py里的图像识别部分哦。
